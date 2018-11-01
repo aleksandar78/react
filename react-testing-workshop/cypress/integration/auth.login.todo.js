@@ -6,7 +6,14 @@
 import {generate} from '../utils'
 
 describe('authentication', () => {
-  beforeEach(() => cy.logout())
+  let user;
+  beforeEach(() => {
+    cy
+      .logout()
+      .createNewUser()
+      .then(u => (user = u))
+      .visit('/')
+  })
 
   it('should allow existing users to login', () => {
     // you'll want to first create a new user.
@@ -17,6 +24,18 @@ describe('authentication', () => {
     //
     // With the user created, go ahead and use the cy commands to:
     // 1. visit the app: visitApp
+
+    cy
+      .getByText('Login')
+      .click()
+      .getByLabelText('Username')
+      .type(user.username, {delay: 50}) // This is delay in mills for each character
+      .getByLabelText('Password')
+      .type(user.password, {delay: 50})
+      .getByText('Submit')
+      .click()
+
+    cy.getByTestId('username-display').should('contain', user.username);
     // 2. Click the login link
     // 3. type the user's username in the username field
     // 4. type the user's password in the password field
