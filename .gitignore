@@ -163,3 +163,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Subprojects to ignore
+burger-app/
